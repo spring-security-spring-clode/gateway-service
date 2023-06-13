@@ -1,0 +1,15 @@
+# cloud configurations
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: service1
+          uri: lb://service1
+          predicates:
+            - Path=/service1/**
+        - id: service2
+          uri: lb://service2
+          predicates:
+            - Path=/service2/**
+
+
