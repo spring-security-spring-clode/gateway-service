@@ -15,4 +15,9 @@ public class FallbackController {
     public Mono<String> service2FallBack() {
         return Mono.just("Service 2 is down, Please try again later!");
     }
+
+    @RequestMapping("/auth-service-fallback")
+    public Mono<String> authServiceFallback() {
+        return Mono.just("Auth service is down");
+    }
 }

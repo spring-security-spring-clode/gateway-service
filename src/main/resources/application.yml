@@ -7,23 +7,47 @@ spring:
           uri: lb://service1
           predicates:
             - Path=/service1/**
-#          filters:
-#            - name: CircuitBreaker
-#              args:
-#                name: service1
-#                fallbackuri: forward:/service1FallBack
+          filters:
+            - AuthenticationFilter
+            - name: CircuitBreaker
+              args:
+                name: service1
+                fallbackuri: forward:/service1FallBack
+
         - id: service2
           uri: lb://service2
           predicates:
             - Path=/service2/**
-#          filters:
-#            - name: CircuitBreaker
-#              args:
-#                name: service2
-#                fallbackuri: forward:/service2FallBack
+          filters:
+            - AuthenticationFilter
+            - name: CircuitBreaker
+              args:
+                name: service2
+                fallbackuri: forward:/service2FallBack
+
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth-service/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: auth-service-fallback
+                fallbackuri: forward:/auth-service-fallback
+
 management:
   endpoints:
     web:
       exposure:
         include: hystrix.stream
+
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+
+
 
